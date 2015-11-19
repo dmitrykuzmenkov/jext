@@ -1,7 +1,8 @@
 {
   "name": "jext",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Javascript ex DOM templater",
+
   "main": "./build.js",
   "browser": "./jext.js",
   "bin": {
@@ -10,8 +11,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+
+  "author": "Dmitry Kuzmenkov",
+  "license": "MIT",
+
+  "homepage": "https://github.com/dmitrykuzmenkov/jext",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmitrykuzmenkov/jext.git"
+  },
+
   "dependencies": {
     "xmldom": "^0.1.19"
   }
