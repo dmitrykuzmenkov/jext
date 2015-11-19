@@ -15,7 +15,7 @@ module.exports = function(files, as_module) {
       Parser.parseFromString(
         fs.readFileSync(file, {encoding: 'utf8'})
       ), pool
-    ).build(file.split('.')[0]);
+    ).build(file.split('/').pop().split('.')[0]);
   });
 
   var pool_code = [];

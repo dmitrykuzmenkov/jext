@@ -36,7 +36,7 @@ You got jext variable defined with template pool manipulation helpers and templa
 Now just get rendered DOM and append to any element. The key of template same as file name without extension.
 
 ```javascript
-var t = templates.get('examples/simple');
+var t = templates.get('simple');
 document.body.appendChild(t.dom());
 ```
 
