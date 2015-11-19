@@ -62,9 +62,9 @@ When making iteration inside template JEXT switching context inside iterated obj
 
 ```json
   {
-    rows: [
-      {value: 1},
-      {value: 2}
+    "rows": [
+      {"value": 1},
+      {"value": 2}
     ]
   }
 ```
@@ -82,9 +82,9 @@ Condition switches context as iteration. Its same easy to use.
 
 ```json
   {
-    first: false,
-    second: {
-      value: 2
+    "first": false,
+    "second": {
+      "value": 2
     }
   }
 ```
