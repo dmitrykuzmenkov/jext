@@ -104,11 +104,17 @@ var Compile = function (xml_tree, templates) {
               var k = attr + '_' + Object.keys(templates).length;
               var children_var = k + '_c';
               new Compile(n, templates).build(k);
+
+              // We need this element to insert new nodes relative to it
+              var after_name = 'a' + n_id;
+              collector.init.push(after_name + '=document.createTextNode("")');
+              collector.dom.push(p_name + '.appendChild(' + after_name + ')');
+
               var render_method = (attr === 'if' ? 'render_child' : 'render_children');
               collect_vars(
                 ['{{' + p + '}}'],
                 collector,
-                'jext.' + render_method + '("' + k + '",' + p_name + ',"{{' + p + '}}",pool,' + children_var + ')'
+                'jext.' + render_method + '("' + k + '",' + after_name + ',"{{' + p + '}}",pool,' + children_var + ')'
               );
               collector.children.push(children_var);
               break;
@@ -208,6 +214,9 @@ var Compile = function (xml_tree, templates) {
                 'k=p.split(".").shift();u[k](a[p])' +
               '})' +
             '}' +
+          '},' +
+          'remove:function(){' +
+            'n1.parentNode.removeChild(n1)' +
           '}' +
         '}' +
       '}'

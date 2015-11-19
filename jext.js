@@ -8,6 +8,9 @@
         t.update(data);
       }
       return t;
+    },
+    release: function(template, instance) {
+      instance.remove();
     }
   };
 
@@ -25,8 +28,7 @@
     data = data || [];
 
     for (var i = children.length - data.length; i > 0; i--) {
-      children.pop();
-      // pool.release(template, children.pop());
+      pool.release(template, children.pop());
     }
 
     for (var i = children.length - 1; i >= 0; i--) {
