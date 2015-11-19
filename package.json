@@ -1,8 +1,12 @@
 {
   "name": "jext",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Javascript ex DOM templater",
-  "main": "index.js",
+  "main": "./build.js",
+  "browser": "./jext.js",
+  "bin": {
+    "jext": "./bin/jext"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
