@@ -99,7 +99,6 @@ var Compile = function (xml_tree, templates) {
             case 'if':
             case 'for':
               p = n.getAttribute(a[i].nodeName);
-              console.log(p);
               n.removeAttribute(a[i].nodeName);
               var k = a[i].nodeName + '_' + Object.keys(templates).length;
               var children_var = k + '_c';
@@ -202,7 +201,11 @@ var Compile = function (xml_tree, templates) {
           '},' +
           'set:function(k,v){u[k](v)},' +
           'update:function(a){' +
-            'if(a!==undefined&&typeof(a)==="object"){Object.keys(a).forEach(function(p){k=p.split(".").shift();console.log(u,k,p);u[k](a[p])})}' +
+            'if(a!==undefined&&typeof(a)==="object"){' +
+              'Object.keys(a).forEach(function(p){' +
+                'k=p.split(".").shift();u[k](a[p])' +
+              '})' +
+            '}' +
           '}' +
         '}' +
       '}'
