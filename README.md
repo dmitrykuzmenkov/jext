@@ -24,6 +24,12 @@ Now merge jext.js lib with generated template
 cat ./jext.js templates.js > bundle.js
 ```
 
+Well you can do same as above with one command:
+
+```bash
+./bin/jext examples/simple.jext -b > bundle.js
+```
+
 Finally require in browser just created the bundle.js file.
 You got jext variable defined with template pool manipulation helpers and templates variable with your template.
 
