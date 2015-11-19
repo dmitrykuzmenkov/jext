@@ -17,6 +17,10 @@
     return methods;
   };
 
+  var render_child = function(template, node, data, pool, children) {
+      render_children(template, node, data ? [data] : [], pool, children);
+  };
+
   var render_children = function(template, node, data, pool, children) {
     data = data || [];
 
@@ -48,4 +52,5 @@
 
   container.pool = pool;
   container.render_children = render_children;
+  container.render_child = render_child;
 })(this);

@@ -98,15 +98,17 @@ var Compile = function (xml_tree, templates) {
           switch (a[i].nodeName) {
             case 'if':
             case 'for':
+              var attr = a[i].nodeName;
               p = n.getAttribute(a[i].nodeName);
               n.removeAttribute(a[i].nodeName);
-              var k = a[i].nodeName + '_' + Object.keys(templates).length;
+              var k = attr + '_' + Object.keys(templates).length;
               var children_var = k + '_c';
               new Compile(n, templates).build(k);
+              var render_method = (attr === 'if' ? 'render_child' : 'render_children');
               collect_vars(
                 ['{{' + p + '}}'],
                 collector,
-                'jext.render_children("' + k + '",' + p_name + ',"{{' + p + '}}",pool,' + children_var + ')'
+                'jext.' + render_method + '("' + k + '",' + p_name + ',"{{' + p + '}}",pool,' + children_var + ')'
               );
               collector.children.push(children_var);
               break;
