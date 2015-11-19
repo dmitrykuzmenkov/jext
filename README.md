@@ -47,3 +47,53 @@ t.update({welcome_text: 'JEXT works!'});
 ```
 
 Now you can see rendered test template on your screen.
+
+## Template markup
+You can use only simple constructs in your html template.
+
+### Variables
+Just use {{ var_name }} in attribute or inside element to make it works.
+```html
+<div title="{{ title }}">{{ body }}</div>
+```
+
+### Iteration
+When making iteration inside template JEXT switching context inside iterated object. So only possible to access object variables of current iterated item.
+
+```json
+  {
+    rows: [
+      {value: 1},
+      {value: 2}
+    ]
+  }
+```
+
+```html
+<div for="rows">
+  The value is: {{ value }}
+</div>
+```
+
+You know what will be as result? :)
+
+### Condition
+Condition switches context as iteration. Its same easy to use.
+
+```json
+  {
+    first: false,
+    second: {
+      value: 2
+    }
+  }
+```
+
+```html
+  <div if="first">
+    First block wont appear here
+  </div>
+  <div if="second">
+    In context of second condition: {{ value }}
+  </div>
+```
