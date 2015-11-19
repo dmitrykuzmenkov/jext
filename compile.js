@@ -107,7 +107,7 @@ var Compile = function (xml_tree, templates) {
               collect_vars(
                 ['{{' + p + '}}'],
                 collector,
-                'jstpl.render_children("' + k + '",' + p_name + ',"{{' + p + '}}",pool,' + children_var + ')'
+                'jext.render_children("' + k + '",' + p_name + ',"{{' + p + '}}",pool,' + children_var + ')'
               );
               collector.children.push(children_var);
               break;

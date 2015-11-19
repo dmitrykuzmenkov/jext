@@ -44,7 +44,7 @@
     }
   };
 
-  var container = typeof(module) !== 'undefined' ? module.exports : (window.jstpl = {});
+  var container = typeof(module) !== 'undefined' ? module.exports : (window.jext = {});
 
   container.pool = pool;
   container.render_children = render_children;
