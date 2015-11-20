@@ -25,21 +25,24 @@
   };
 
   var render_children = function(template, node, data, pool, children) {
+    var i, lb, ub;
+
     data = data || [];
 
-    for (var i = children.length - data.length; i > 0; i--) {
+    for (i = children.length - data.length; i > 0; i--) {
       pool.release(template, children.pop());
     }
 
-    for (var i = children.length - 1; i >= 0; i--) {
+    for (i = children.length - 1; i >= 0; i--) {
       children[i].update(data[i]);
     }
 
     if (children.length < data.length) {
       var fragment = document.createDocumentFragment();
 
-      for (var lb = children.length, ub = data.length; lb < ub; lb++) {
-        var nested = pool.get(template);
+      var nested;
+      for (lb = children.length, ub = data.length; lb < ub; lb++) {
+        nested = pool.get(template);
 
         children.push(nested);
         fragment.appendChild(nested.dom());
