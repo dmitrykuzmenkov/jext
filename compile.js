@@ -74,10 +74,12 @@ var Compile = function (xml_tree, templates) {
   }
 
   function node(n, node_id, collector) {
-    var n_id = new_id();
-    var n_name = 'n' + n_id;
-    var p_name = 'n' + node_id;
-    var text;
+    var n_id = new_id(),
+      n_name = 'n' + n_id,
+      p_name = 'n' + node_id,
+      text,
+      a, i, l, child
+    ;
 
     if (node_id === 0) {
       collector.init.push(p_name + '=document.createDocumentFragment()');
@@ -98,24 +100,24 @@ var Compile = function (xml_tree, templates) {
         break;
 
       case 1: // Element
-        var p = null;
-        for (var a = n.attributes, i = 0, l = n.attributes.length; i < l; i++) {
+        var p, attr, k, children_var, after_name, render_method;
+        for (a = n.attributes, i = 0, l = n.attributes.length; i < l; i++) {
           switch (a[i].nodeName) {
             case 'if':
             case 'for':
-              var attr = a[i].nodeName;
-              p = n.getAttribute(a[i].nodeName);
-              n.removeAttribute(a[i].nodeName);
-              var k = attr + '_' + Object.keys(templates).length;
-              var children_var = k + '_c';
+              attr = a[i].nodeName;
+              p = n.getAttribute(attr);
+              n.removeAttribute(attr);
+              k = attr + '_' + Object.keys(templates).length;
+              children_var = k + '_c';
               new Compile(n, templates).build(k);
 
               // We need this element to insert new nodes relative to it
-              var after_name = 'a' + n_id;
+              after_name = 'a' + n_id;
               collector.init.push(after_name + '=document.createTextNode("")');
               collector.dom.push(p_name + '.appendChild(' + after_name + ')');
 
-              var render_method = (attr === 'if' ? 'render_child' : 'render_children');
+              render_method = (attr === 'if' ? 'render_child' : 'render_children');
               collect_vars(
                 ['{{' + p + '}}'],
                 collector,
@@ -129,7 +131,7 @@ var Compile = function (xml_tree, templates) {
         if (!p) {
           collector.init.push(n_name + '=document.createElement("' + n.tagName + '")');
           if (n.attributes) {
-            for (var a = n.attributes, i = 0, l = n.attributes.length; i < l; i++) {
+            for (a = n.attributes, i = 0, l = n.attributes.length; i < l; i++) {
               text = string(a[i].value);
               collect_vars(
                 parse_tokens(text),
@@ -145,7 +147,7 @@ var Compile = function (xml_tree, templates) {
           collector.dom.push('n' + node_id + '.appendChild(' + n_name + ')');
 
           if (n.childNodes) {
-            for (var i = 0, child = n.childNodes, l = n.childNodes.length; i < l; i++) {
+            for (i = 0, child = n.childNodes, l = n.childNodes.length; i < l; i++) {
               node(child[i], n_id, collector);
             }
           }
