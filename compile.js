@@ -1,4 +1,9 @@
-var var_regexp = /(\{\{.+?\}\})/g;
+var var_regexp = /(\{\{.+?\}\})/g,
+    compile_template = require('fs')
+      .readFileSync(
+        require.resolve('./compile.template.js'),
+        {encoding: 'utf8'}
+      );
 
 var Compile = function (xml_tree, templates) {
   var lid = 0;
@@ -37,7 +42,7 @@ var Compile = function (xml_tree, templates) {
       if (!collector.vars[key].names[param]) {
         collector.vars[key].names[param] = 'v' + Object.keys(collector.vars).length;
         if (key !== param) { // Object var?
-           collector.vars[key].names[param] += '_' + Object.keys(collector.vars[key].names).length
+           collector.vars[key].names[param] += '_' + Object.keys(collector.vars[key].names).length;
         }
       }
 
@@ -196,32 +201,17 @@ var Compile = function (xml_tree, templates) {
     });
 
     // Generate result
-    templates[template] =
-      'function(pool){' +
-        'var ' + collector.init.join(',') + ',' +
-        'f={' + func_code.join(',') + '},' +
-        'u={' + update_code.join(',') + '}' +
-        ';' +
-        'return {' +
-          'dom:function(){' +
-            collector.dom.join(';') + ';' +
-            'return n0' +
-          '},' +
-          'set:function(k,v){u[k](v)},' +
-          'update:function(a){' +
-            'if(a!==undefined&&typeof(a)==="object"){' +
-              'Object.keys(a).forEach(function(p){' +
-                'k=p.split(".").shift();u[k](a[p])' +
-              '})' +
-            '}' +
-          '},' +
-          'remove:function(){' +
-            'n1.parentNode.removeChild(n1)' +
-          '}' +
-        '}' +
-      '}'
-    ;
-
+    templates[template] = compile_template.replace(
+      /\{\{[a-z\_]+\}\}/g,
+      function(m) {
+        return {
+          '{{var_code}}': collector.init.join(','),
+          '{{func_code}}': func_code.join(','),
+          '{{update_code}}': update_code.join(','),
+          '{{dom_code}}': collector.dom.join(';')
+        }[m];
+      }
+    );
   };
 };
 module.exports = Compile;
