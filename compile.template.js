@@ -14,15 +14,13 @@ function(pool) {
       return n0;
     },
 
-    set: function(k, v) {
-      u[k](v);
-    },
-
     update: function(a) {
       if (a !== undefined && typeof(a) === "object") {
         var k;
         for (k in a) {
-          this.set(k, a[k]);
+          if (u[k] === undefined) {
+            console.warn('No such var: {{' + k + '}}');
+          } else u[k](a[k]);
         }
       }
     },
