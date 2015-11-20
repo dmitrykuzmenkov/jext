@@ -49,7 +49,7 @@ t.update({welcome_text: 'JEXT works!'});
 Now you can see rendered test template on your screen.
 
 ### Usage with webpack or whatever
-First install loader for webpack. Instruction read here: https://www.npmjs.com/package/jext-loader.
+First install loader for webpack. Instruction read here: (https://www.npmjs.com/package/jext-loader).
 
 Install stuff:
 
@@ -130,14 +130,14 @@ Condition switches context as iteration. Its same easy to use.
 ### get(template, data)
 Return template object from pool of available templates using the template key.
 
-template - name of template. If your template name as mytemplate.jext it must be mytemplate (without extension).
-data - optional. Pass data to render your template as object.
+- *template* - name of template. If your template name as mytemplate.jext it must be mytemplate (without extension).
+- *data* - optional. Pass data to render your template as object.
 
 ### release(template, instance)
 It releases generate template from DOM tree
 
-template - name of template.
-instance - generated Node of this template.
+- *template* - name of template.
+- *instance* - generated Node of this template.
 
 ## Template object methods
 When you get template from created pool, it has several methods to manipulate it.
@@ -146,7 +146,7 @@ When you get template from created pool, it has several methods to manipulate it
 The method returns generated DOM tree for current template as DocumentFragment (see document.createDocumentFragment).
 
 ### update(data)
-data - object to update and rerender current loaded template's DOM.
+- *data* - object to update and rerender current loaded template's DOM.
 
 ### set(key, value)
 Alias for update method. But apply key of variable and its value to easy update only what you need to.
@@ -155,4 +155,4 @@ Alias for update method. But apply key of variable and its value to easy update 
 This method removes rendered element from DOM tree.
 
 ## Loaders for JEXT
-Webpack: https://www.npmjs.com/package/jext-loader.
+Webpack: (https://www.npmjs.com/package/jext-loader).
