@@ -148,9 +148,6 @@ The method returns generated DOM tree for current template as DocumentFragment (
 ### update(data)
 - *data* - object to update and rerender current loaded template's DOM.
 
-### set(key, value)
-Alias for update method. But apply key of variable and its value to easy update only what you need to.
-
 ### remove()
 This method removes rendered element from DOM tree.
 
