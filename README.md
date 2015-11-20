@@ -48,6 +48,34 @@ t.update({welcome_text: 'JEXT works!'});
 
 Now you can see rendered test template on your screen.
 
+### Usage with webpack or whatever
+First install loader for webpack. Instruction read here: https://www.npmjs.com/package/jext-loader.
+
+Install stuff:
+
+```bash
+npm install jext
+npm install jext-loader
+```
+
+Somewhere in your code write to render
+
+```javascript
+# First require dependencies
+var jext = require('jext');
+var simple_tpl = require('examples/simple.jext');
+
+# Make pool of templates, really only one now
+var pool = jext.pool(simple_tpl);
+
+# Fetch template and render
+var t = pool.get('simple')
+document.body.appendChild(t.dom());
+t.update({welcome_text: 'JEXT works!'});
+```
+
+Build your project and enjoy!
+
 ## Template markup
 You can use only simple constructs in your html template.
 
@@ -125,3 +153,6 @@ Alias for update method. But apply key of variable and its value to easy update 
 
 ### remove()
 This method removes rendered element from DOM tree.
+
+## Loaders for JEXT
+Webpack: https://www.npmjs.com/package/jext-loader.
