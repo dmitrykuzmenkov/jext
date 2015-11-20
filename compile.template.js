@@ -1,4 +1,4 @@
-function (pool) {
+function(pool) {
   var {{var_code}},
     f = {
       {{func_code}}
@@ -20,14 +20,15 @@ function (pool) {
 
     update: function(a) {
       if (a !== undefined && typeof(a) === "object") {
-        Object.keys(a).forEach(function(p) {
-          k=p.split(".").shift();u[k](a[p]);
-        });
+        var k;
+        for (k in a) {
+          this.set(k, a[k]);
+        }
       }
     },
 
     remove: function() {
       n1.parentNode.removeChild(n1);
     }
-  }
+  };
 }
