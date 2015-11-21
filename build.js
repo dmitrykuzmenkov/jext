@@ -23,18 +23,14 @@ module.exports = function(files, as_module) {
     pool_code.push('"' + template + '":' + pool[template]);
   }
 
-  var lines = [];
-  if (as_module) {
-    lines = [
+  return {
+    m: [
       'var jext = require("jext");',
       'module.exports = {' + pool_code.join(',') + '}'
-    ];
-  } else {
-    lines = [
+    ],
+    w: [
       'var template_list = {' + pool_code.join(',') + '};',
       'window.templates = jext.pool(template_list);'
-    ];
-  }
-
-  return lines.join("\n");
+    ]
+  }[as_module ? 'm' : 'w'].join("\n");
 };
