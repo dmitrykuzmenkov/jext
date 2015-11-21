@@ -55,11 +55,13 @@ var Compile = function (xml_tree, templates) {
         return '"+' + replacement[m] + '+"';
       }
     ).replace('""+', '').replace('+""', '')) - 1;
-    Object.keys(replacement).forEach(function(token) {
-      var param = var_name(token);
-      var key = param.split('.').shift();
+
+    var token, key, param;
+    for (token in replacement) {
+      param = var_name(token);
+      key = param.split('.').shift();
       collector.vars[key].funcs.push(func_index);
-    });
+    }
   }
 
   function string(str) {
@@ -163,39 +165,39 @@ var Compile = function (xml_tree, templates) {
 
     // Generate variable set functions
     var update_code = [], init_code = [];
-    Object.keys(collector.vars).forEach(function(param) {
-      var def_code = [];
 
-      Object.keys(collector.vars[param].names).forEach(function(name) {
-        var def_name = collector.vars[param].names[name];
-        var parts = name.split('.');
+    var param, name, def_name, parts;
+    var def_code;
+    for (param in collector.vars) {
+      def_code = [];
+
+      for (name in collector.vars[param].names) {
+        def_name = collector.vars[param].names[name];
+        parts = name.split('.');
         parts[0] = 'a';
 
         def_code.push(def_name + '=' + parts.join('.'));
         collector.init.push(def_name + "=''");
-      });
-
-      var func_code = [];
-      collector.vars[param].funcs.forEach(function (func) {
-        func_code.push('f[' + func + ']()');
-      });
+      }
 
       update_code.push(
         '"' + param + '":' +
         'function(a){' +
           def_code.join(';') + ';' +
-          func_code.join(';') +
+          'f[' +
+            collector.vars[param].funcs.join(']();f[') +
+          ']();' +
         '}'
       );
-    });
+    }
 
-    // Collecto update function definition
-    var func_code = [];
-    Object.keys(collector.funcs).forEach(function(func) {
+    // Collect update function definition
+    var func, func_code = [];
+    for (func in collector.funcs) {
       func_code.push(
         func + ':function(){' + collector.funcs[func] + '}'
       );
-    });
+    }
 
     // Collect children variables
     collector.children.forEach(function(child) {

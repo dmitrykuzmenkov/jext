@@ -18,10 +18,10 @@ module.exports = function(files, as_module) {
     ).build(file.split('/').pop().split('.')[0]);
   });
 
-  var pool_code = [];
-  Object.keys(pool).forEach(function(template) {
+  var template, pool_code = [];
+  for (template in pool) {
     pool_code.push('"' + template + '":' + pool[template]);
-  });
+  }
 
   var lines = [];
   if (as_module) {
