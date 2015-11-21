@@ -8,7 +8,7 @@ var var_regexp = /(\{\{.+?\}\})/g,
 var Compile = function (xml_tree, templates) {
   var lid = 0;
   function new_id() {
-    return lid++;
+    return (lid++).toString(16);
   }
 
   var collector = {
