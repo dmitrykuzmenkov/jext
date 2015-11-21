@@ -83,7 +83,7 @@ var Compile = function (xml_tree, templates) {
       a, i, l, child
     ;
 
-    if (node_id === 0) {
+    if (node_id === "0") {
       collector.init.push(p_name + '=document.createDocumentFragment()');
     }
 
