@@ -92,9 +92,12 @@ var Compile = function (xml_tree, templates) {
       a, i, l, child
     ;
 
+    if (node_id === "0") {
+      collector.init.push(p_name + '=document.createDocumentFragment()');
+    }
+
     switch (n.nodeType) {
       case 9: // Document
-        collector.init.push(n_name + '=document.createDocumentFragment()');
         node(n.firstChild, node_id, collector);
         break;
 
@@ -169,7 +172,7 @@ var Compile = function (xml_tree, templates) {
 
   // Generate DOM
   this.build = function(template) {
-    node(xml_tree, 0, collector);
+    node(xml_tree, new_id(), collector);
 
     // Generate variable set functions
     var update_code = [], init_code = [];
