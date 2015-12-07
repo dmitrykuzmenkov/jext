@@ -1,21 +1,19 @@
 (function(context) {
-  var templates = {};
-
-  var methods = {
-    get: function(template, data) {
-      var t = templates[template](methods);
-      if (data) {
-        t.update(data);
+  var pool = function (pool) {
+    var templates = pool;
+    var methods = {
+      get: function(template, data) {
+        console.log(templates, template, templates[template]);
+        var t = templates[template](methods);
+        if (data) {
+          t.update(data);
+        }
+        return t;
+      },
+      release: function(template, instance) {
+        instance.remove();
       }
-      return t;
-    },
-    release: function(template, instance) {
-      instance.remove();
-    }
-  };
-
-  var pool = function(pool) {
-    templates = pool;
+    };
 
     return methods;
   };
