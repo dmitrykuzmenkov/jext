@@ -5,6 +5,15 @@ var var_regexp = /(\{\{.+?\}\})/g,
         {encoding: 'utf8'}
       );
 
+var direct_attributes = [
+  '*.id', 'input.name', 'input.value'
+];
+
+var is_direct_attribute = function (element, attribute) {
+  return direct_attributes.indexOf(element + '.' + attribute) > -1
+    || direct_attributes.indexOf('*.' + attribute) > -1;
+};
+
 var Compile = function (xml_tree, templates) {
   var lid = 0;
   function new_id() {
@@ -135,7 +144,9 @@ var Compile = function (xml_tree, templates) {
               collect_vars(
                 parse_tokens(text),
                 collector,
-                n_name + '.setAttribute("' + a[i].name + '",' + text + ')'
+                is_direct_attribute(n.nodeName, a[i].name)
+                  ? (n_name + '.' + a[i].name + ' = ' + text)
+                  : (n_name + '.setAttribute("' + a[i].name + '",' + text + ')')
               );
 
               if (trim_vars(text) !== '""') {
