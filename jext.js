@@ -3,7 +3,6 @@
     var templates = pool;
     var methods = {
       get: function(template, data) {
-        console.log(templates, template, templates[template]);
         var t = templates[template](methods);
         if (data) {
           t.update(data);
