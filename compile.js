@@ -122,8 +122,8 @@ var Compile = function (xml_tree, templates) {
               attr = a[i].nodeName;
               p = n.getAttribute(attr);
               n.removeAttribute(attr);
-              k = attr + '_' + Object.keys(templates).length;
-              children_var = k + '_c';
+              k = attr + (Object.keys(templates).length - 1);
+              children_var = k + 'c';
               new Compile(n, templates).build(k);
 
               // We need this element to insert new nodes relative to it
@@ -175,6 +175,7 @@ var Compile = function (xml_tree, templates) {
 
   // Generate DOM
   this.build = function(template) {
+    templates[template] = '';
     node(xml_tree, new_id(), collector);
 
     // Generate variable set functions
