@@ -5,6 +5,7 @@
       get: function(template, data) {
         var t = templates[template](methods);
         if (data) {
+          t.dom();
           t.update(data);
         }
         return t;
