@@ -219,6 +219,9 @@ var Compile = function (xml_tree, templates) {
       collector.init.push(child + '=[]');
     });
 
+    // Save generated dom until it appended
+    collector.dom.unshift('if (n0.childNodes.length > 0) { return n0; }');
+
     // Generate result
     templates[template] = compile_template.replace(
       /\{\{[a-z\_]+\}\}/g,
