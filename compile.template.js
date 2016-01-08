@@ -8,10 +8,15 @@ function(pool) {
     }
   ;
 
+  var root = document.createDocumentFragment();
   return {
     dom: function() {
+      if (root.childNodes.length) {
+        return root;
+      }
+
       {{dom_code}};
-      return n0;
+      return root;
     },
 
     update: function(a) {

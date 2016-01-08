@@ -87,21 +87,16 @@ var Compile = function (xml_tree, templates) {
     return str.replace(var_regexp, '');
   }
 
-  function node(n, node_id, collector) {
+  function node(n, p_name, collector) {
     var n_id = new_id(),
       n_name = 'n' + n_id,
-      p_name = 'n' + node_id,
       text,
       a, i, l, child
     ;
 
-    if (node_id === "0") {
-      collector.init.push(p_name + '=document.createDocumentFragment()');
-    }
-
     switch (n.nodeType) {
       case 9: // Document
-        node(n.firstChild, node_id, collector);
+        node(n.firstChild, p_name, collector);
         break;
 
       case 3: // Text
@@ -160,11 +155,11 @@ var Compile = function (xml_tree, templates) {
               }
             }
           }
-          collector.dom.push('n' + node_id + '.appendChild(' + n_name + ')');
+          collector.dom.push(p_name + '.appendChild(' + n_name + ')');
 
           if (n.childNodes) {
             for (i = 0, child = n.childNodes, l = n.childNodes.length; i < l; i++) {
-              node(child[i], n_id, collector);
+              node(child[i], n_name, collector);
             }
           }
         }
@@ -176,7 +171,7 @@ var Compile = function (xml_tree, templates) {
   // Generate DOM
   this.build = function(template) {
     templates[template] = '';
-    node(xml_tree, new_id(), collector);
+    node(xml_tree, 'root', collector);
 
     // Generate variable set functions
     var update_code = [], init_code = [];
@@ -218,9 +213,6 @@ var Compile = function (xml_tree, templates) {
     collector.children.forEach(function(child) {
       collector.init.push(child + '=[]');
     });
-
-    // Save generated dom until it appended
-    collector.dom.unshift('if (n0.childNodes.length > 0) { return n0; }');
 
     // Generate result
     templates[template] = compile_template.replace(
