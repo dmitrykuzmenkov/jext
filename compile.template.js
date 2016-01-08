@@ -24,7 +24,7 @@ function(pool) {
         var k;
         for (k in a) {
           if (u[k] === undefined) {
-            console.warn('No such var: {{' + k + '}}');
+            console.warn('Unused var: {{' + k + '}}');
           } else u[k](a[k]);
         }
       }
