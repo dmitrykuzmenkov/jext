@@ -31,7 +31,7 @@ function(pool) {
     },
 
     remove: function() {
-      n1.parentNode.removeChild(n1);
+      n0.parentNode.removeChild(n0);
     }
   };
 }
