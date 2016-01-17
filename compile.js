@@ -7,7 +7,7 @@ var var_regexp = /(\{\{.+?\}\})/g,
 
 var direct_attributes = [
   '*.id', '*.title',
-  'input.name', 'input.value', 'input.type',
+  'input.name', 'input.value', 'input.type', 'textarea.value',
   'a.href', 'a.target', 'form.method', 'form.action',
   'img.src', 'img.srcset', 'img.alt', 'img.width', 'img.height'
 ];
