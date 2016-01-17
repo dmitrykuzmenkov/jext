@@ -90,7 +90,7 @@ var Compile = function (xml_tree, templates) {
   function node(n, p_name, collector) {
     var n_id = new_id(),
       n_name = 'n' + n_id,
-      text,
+      text, has_plain_text,
       a, i, l, child
     ;
 
@@ -142,15 +142,20 @@ var Compile = function (xml_tree, templates) {
           if (n.attributes) {
             for (a = n.attributes, i = 0, l = n.attributes.length; i < l; i++) {
               text = string(a[i].value);
+              has_plain_text = (trim_vars(text) !== '""');
               collect_vars(
                 parse_tokens(text),
                 collector,
-                is_direct_attribute(n.nodeName, a[i].name)
+                (has_plain_text
+                  ? ''
+                  : 'if (' + text + ' === false) {' + n_name + '.removeAttribute("' + a[i].name + '"); return;}'
+                ) + (is_direct_attribute(n.nodeName, a[i].name)
                   ? (n_name + '.' + a[i].name + ' = ' + text)
                   : (n_name + '.setAttribute("' + a[i].name + '",' + text + ')')
+                )
               );
 
-              if (trim_vars(text) !== '""') {
+              if (has_plain_text) {
                 collector.dom.push(n_name + '.setAttribute("' + a[i].name + '",' + trim_vars(text) + ')');
               }
             }
