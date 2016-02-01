@@ -9,7 +9,8 @@ var direct_attributes = [
   '*.id', '*.title',
   'input.name', 'input.value', 'input.type',
   'a.href', 'a.target', 'form.method', 'form.action',
-  'img.src', 'img.srcset', 'img.alt', 'img.width', 'img.height'
+  'img.src', 'img.srcset', 'img.alt', 'img.width', 'img.height',
+  'input.checked', 'input.selected'
 ];
 
 var is_direct_attribute = function (element, attribute) {
