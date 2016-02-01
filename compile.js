@@ -20,7 +20,7 @@ var is_direct_attribute = function (element, attribute) {
 
 var svg_elements = [
   'svg', 'rect', 'circle', 'ellipse', 'line',
-  'polyline', 'polygon', 'path', 'text', 'g', 'use', 'title',
+  'polyline', 'polygon', 'path', 'text', 'g', 'use',
   'defs'
 ];
 
@@ -116,7 +116,7 @@ var Compile = function (xml_tree, templates) {
         break;
 
       case 1: // Element
-        var p, attr, k, children_var, after_name, render_method;
+        var p, attr, k, children_var, after_name, render_method, is_svg;
         for (a = n.attributes, i = 0, l = n.attributes.length; i < l; i++) {
           switch (a[i].nodeName) {
             case 'if':
@@ -145,15 +145,11 @@ var Compile = function (xml_tree, templates) {
         }
 
         if (!p) {
-          // Todo: refactor
-          if (svg_elements.indexOf(n.tagName) > -1) {
+          is_svg = svg_elements.indexOf(n.tagName) > -1;
+          if (is_svg) {
             collector.init.push(n_name + '=document.createElementNS("http://www.w3.org/2000/svg", "' + n.tagName + '")');
           } else {
             collector.init.push(n_name + '=document.createElement("' + n.tagName + '")');
-          }
-
-          if (n.tagName === 'svg') {
-            collector.dom.push(n_name + '.setAttribute("xmlns", ' + n_name + '.namespaceURI)');
           }
 
           if (n.attributes) {
@@ -166,7 +162,7 @@ var Compile = function (xml_tree, templates) {
                 (has_plain_text
                   ? ''
                   : 'if (' + text + ' === false) {' + n_name + '.removeAttribute("' + a[i].name + '"); return;}'
-                ) + (is_direct_attribute(n.nodeName, a[i].name)
+                ) + (!is_svg && is_direct_attribute(n.nodeName, a[i].name)
                   ? (n_name + '.' + a[i].name + ' = ' + text)
                   : (a[i].name === 'xlink:href'
                     ? n_name + '.setAttributeNS("http://www.w3.org/1999/xlink", "href",' + text + ')'
@@ -176,7 +172,10 @@ var Compile = function (xml_tree, templates) {
               );
 
               if (has_plain_text) {
-                collector.dom.push(n_name + '.setAttribute("' + a[i].name + '",' + trim_vars(text) + ')');
+                collector.dom.push(a[i].name === 'xlink:href'
+                  ? n_name + '.setAttributeNS("http://www.w3.org/1999/xlink", "href",' + trim_vars(text) + ')'
+                  : n_name + '.setAttribute("' + a[i].name + '",' + trim_vars(text) + ')'
+                );
               }
             }
           }
