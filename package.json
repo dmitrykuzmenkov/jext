@@ -1,6 +1,6 @@
 {
   "name": "jext",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "description": "Javascript ex DOM templater",
   "keywords": ["dom", "template", "html", "xml", "render", "jext"],
   "main": "./build.js",

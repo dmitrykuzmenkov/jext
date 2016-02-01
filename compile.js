@@ -138,7 +138,16 @@ var Compile = function (xml_tree, templates) {
         }
 
         if (!p) {
-          collector.init.push(n_name + '=document.createElement("' + n.tagName + '")');
+          // Todo: refactor
+          if (n.tagName === 'svg' || n.parentNode.tagName === 'svg') {
+            collector.init.push(n_name + '=document.createElementNS("http://www.w3.org/2000/svg", "svg")');
+            collector.dom.push(n_name + '.setAttribute("xmlns", ' + n_name + '.namespaceURI)');
+          } else if (n.parentNode.tagName === 'svg') {
+            collector.init.push(n_name + '=document.createElementNS("http://www.w3.org/2000/svg", "' + n.tagName + '")');
+          } else {
+            collector.init.push(n_name + '=document.createElement("' + n.tagName + '")');
+          }
+
           if (n.attributes) {
             for (a = n.attributes, i = 0, l = n.attributes.length; i < l; i++) {
               text = string(a[i].value);
