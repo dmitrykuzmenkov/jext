@@ -17,6 +17,12 @@ var is_direct_attribute = function (element, attribute) {
     || direct_attributes.indexOf('*.' + attribute) > -1;
 };
 
+var svg_elements = [
+  'svg', 'rect', 'circle', 'ellipse', 'line',
+  'polyline', 'polygon', 'path', 'text', 'g', 'use', 'title',
+  'defs'
+];
+
 var Compile = function (xml_tree, templates) {
   var lid = 0;
   function new_id() {
@@ -139,13 +145,14 @@ var Compile = function (xml_tree, templates) {
 
         if (!p) {
           // Todo: refactor
-          if (n.tagName === 'svg' || n.parentNode.tagName === 'svg') {
-            collector.init.push(n_name + '=document.createElementNS("http://www.w3.org/2000/svg", "svg")');
-            collector.dom.push(n_name + '.setAttribute("xmlns", ' + n_name + '.namespaceURI)');
-          } else if (n.parentNode.tagName === 'svg') {
+          if (svg_elements.indexOf(n.tagName) > -1) {
             collector.init.push(n_name + '=document.createElementNS("http://www.w3.org/2000/svg", "' + n.tagName + '")');
           } else {
             collector.init.push(n_name + '=document.createElement("' + n.tagName + '")');
+          }
+
+          if (n.tagName === 'svg') {
+            collector.dom.push(n_name + '.setAttribute("xmlns", ' + n_name + '.namespaceURI)');
           }
 
           if (n.attributes) {
@@ -160,7 +167,10 @@ var Compile = function (xml_tree, templates) {
                   : 'if (' + text + ' === false) {' + n_name + '.removeAttribute("' + a[i].name + '"); return;}'
                 ) + (is_direct_attribute(n.nodeName, a[i].name)
                   ? (n_name + '.' + a[i].name + ' = ' + text)
-                  : (n_name + '.setAttribute("' + a[i].name + '",' + text + ')')
+                  : (a[i].name === 'xlink:href'
+                    ? n_name + '.setAttributeNS("http://www.w3.org/1999/xlink", "href",' + text + ')'
+                    : n_name + '.setAttribute("' + a[i].name + '",' + text + ')'
+                  )
                 )
               );
 
